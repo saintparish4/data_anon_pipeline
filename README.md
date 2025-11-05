@@ -23,3 +23,5 @@
 "Transform production data into shareable data that's legally safe and actually useful."
 
 **Success criteria:** Data scientist can still train accurate models, but can't identify individuals.
+
+use python -m pytest/ -v

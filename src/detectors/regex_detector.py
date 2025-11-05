@@ -194,6 +194,10 @@ class RegexDetector:
         Returns:
             True if valid according to Luhn algorithm, False otherwise
         """
+        # Reject all zeros or other obviously invalid patterns
+        if not card_number or card_number == '0' * len(card_number):
+            return False
+        
         def luhn_checksum(card_num):
             def digits_of(n):
                 return [int(d) for d in str(n)]
