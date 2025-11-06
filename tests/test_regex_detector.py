@@ -174,8 +174,8 @@ class TestCreditCardDetection:
     
     def test_detect_valid_credit_card(self, detector):
         """Test detection of valid credit card (with Luhn check)."""
-        # Valid test card number (passes Luhn)
-        text = "Card: 4532-1488-0343-6464"
+        # Valid test card number (passes Luhn) - Visa test card
+        text = "Card: 4532-0151-1283-0366"
         matches = detector.detect_credit_cards(text)
         
         assert len(matches) == 1
@@ -184,14 +184,14 @@ class TestCreditCardDetection:
     
     def test_detect_credit_card_no_separators(self, detector):
         """Test detection of credit card without separators."""
-        text = "Card: 4532148803436464"
+        text = "Card: 4532015112830366"
         matches = detector.detect_credit_cards(text)
         
         assert len(matches) == 1
     
     def test_detect_credit_card_space_separators(self, detector):
         """Test detection of credit card with space separators."""
-        text = "Card: 4532 1488 0343 6464"
+        text = "Card: 4532 0151 1283 0366"
         matches = detector.detect_credit_cards(text)
         
         assert len(matches) == 1
@@ -207,8 +207,9 @@ class TestCreditCardDetection:
     def test_luhn_algorithm_validation(self, detector):
         """Test Luhn algorithm directly."""
         # Valid card numbers (these pass Luhn)
-        assert detector._validate_luhn('4532148803436464') == True
-        assert detector._validate_luhn('5425233430109903') == True
+        assert detector._validate_luhn('4532015112830366') == True  # Visa test card
+        assert detector._validate_luhn('4111111111111111') == True  # Visa test card
+        assert detector._validate_luhn('5425233430109903') == True  # Mastercard test card
         
         # Invalid card numbers (these fail Luhn)
         assert detector._validate_luhn('1234567890123456') == False

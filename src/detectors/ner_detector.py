@@ -1,51 +1,52 @@
 """
-Named Entity Recognition (NER) based PII detector
+Named Entity Recognition (NER) based PII detector.
 
 Uses spaCy to detect:
-- Person names (PERSON ENTITY)
-- Locations (GPE, LOC ENTITIES)
-- Organizations (ORG ENTITY) 
+- Person names (PERSON entity)
+- Locations (GPE, LOC entities)
+- Organizations (ORG entity)
 """
 
 from typing import List, Dict, Optional
 from dataclasses import dataclass
 
+
 @dataclass
 class NERMatch:
-    """Represents a detected named entity"""
+    """Represents a detected named entity."""
     entity_type: str
     value: str
     start: int
     end: int
     confidence: float
 
-class NERDetector:
-    """Detects PII using Named Entity Recognition"""
 
+class NERDetector:
+    """Detects PII using Named Entity Recognition."""
+    
     def __init__(self, model_name: str = 'en_core_web_sm'):
         """
-        Initialize NER detector with spaCy model
-
+        Initialize NER detector with spaCy model.
+        
         Args:
             model_name: Name of spaCy model to use
         """
         self.model_name = model_name
         self._nlp = None
-
+    
     @property
     def nlp(self):
-        """Lazy load spaCy model"""
+        """Lazy load spaCy model."""
         if self._nlp is None:
             try:
                 import spacy
                 self._nlp = spacy.load(self.model_name)
             except OSError:
                 raise RuntimeError(
-                    f"spaCy model '{self.model_name}' not found "
+                    f"spaCy model '{self.model_name}' not found. "
                     f"Install it with: python -m spacy download {self.model_name}"
                 )
         return self._nlp
-
     
     def detect_persons(self, text: str) -> List[NERMatch]:
         """

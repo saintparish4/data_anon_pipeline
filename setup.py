@@ -9,5 +9,10 @@ setup(
         "spacy",
     ],
     python_requires=">=3.8",
+    entry_points={
+        'console_scripts': [
+            'data-anon-scan=src.cli:main',
+        ],
+    },
 )
 
